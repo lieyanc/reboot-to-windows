@@ -1,0 +1,11 @@
+[Unit]
+Description=Set UEFI BootNext to Windows Boot Manager
+ConditionPathIsDirectory=/sys/firmware/efi/efivars
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/libexec/reboot-to-windows
+PrivateNetwork=yes
+PrivateTmp=yes
+ProtectHome=yes
+NoNewPrivileges=yes

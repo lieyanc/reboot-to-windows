@@ -1,0 +1,3 @@
+# PARTUUID of the EFI System Partition holding the Windows Boot Manager to
+# boot next. Find it with: lsblk -o NAME,PARTUUID,PARTTYPENAME
+WINDOWS_ESP_PARTUUID=b1976b1c-9364-4ecb-97d6-729ec9b2bd6c

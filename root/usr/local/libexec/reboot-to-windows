@@ -1,0 +1,24 @@
+#!/bin/sh
+# Point UEFI BootNext at the Windows Boot Manager on the configured ESP.
+# The entry is looked up by PARTUUID each time, so renumbered Boot#### entries
+# do not break it. BootNext is consumed by the firmware after one boot.
+set -eu
+
+. /etc/default/reboot-to-windows
+
+entry=$(efibootmgr | awk -v uuid="$WINDOWS_ESP_PARTUUID" '
+    /^Boot[0-9A-Fa-f]{4}\*/ &&
+    index(tolower($0), tolower(uuid)) &&
+    index(toupper($0), "\\EFI\\MICROSOFT\\BOOT\\BOOTMGFW.EFI") {
+        print substr($1, 5, 4)
+        exit
+    }')
+
+if [ -z "$entry" ]; then
+    echo "no active Windows Boot Manager entry on ESP $WINDOWS_ESP_PARTUUID" >&2
+    exit 1
+fi
+
+efibootmgr --bootnext "$entry" >/dev/null
+efibootmgr | grep -qx "BootNext: $entry"
+echo "BootNext set to Boot$entry"

@@ -1,0 +1,7 @@
+{
+  "uuid": "reboot-to-windows@lieyan",
+  "name": "Reboot to Windows",
+  "description": "Adds a Restart to Windows item to the power menu. Sets UEFI BootNext through reboot-to-windows.service, then restarts the session normally.",
+  "shell-version": ["50"],
+  "version": 1
+}
